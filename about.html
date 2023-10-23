@@ -99,6 +99,38 @@
           </div>
         </div>
       </div>
+      <h1>Список Bluetooth устройств</h1>
+    <button id="scanButton">Начать сканирование</button>
+    <ul id="deviceList"></ul>
+
+    <script>
+      // Функция для сканирования доступных Bluetooth устройств и отображения их на странице
+      async function scanForDevices() {
+        try {
+          const devices = await navigator.bluetooth.requestDevice({
+            filters: [], // Нет фильтров, чтобы получить доступ ко всем устройствам
+          });
+
+          const deviceList = document.getElementById("deviceList");
+
+          // Очищаем список устройств перед каждым новым сканированием
+          deviceList.innerHTML = "";
+
+          devices.forEach((device) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = `Устройство: ${device.name || "Без имени"}`;
+            deviceList.appendChild(listItem);
+          });
+        } catch (error) {
+          console.error("Ошибка сканирования Bluetooth устройств:", error);
+        }
+      }
+
+      // Привязываем функцию сканирования к кнопке
+      document
+        .getElementById("scanButton")
+        .addEventListener("click", scanForDevices);
+    </script>
     </main>
     <footer>
       <!-- place footer here -->
